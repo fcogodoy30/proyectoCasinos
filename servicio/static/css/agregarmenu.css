@@ -1,0 +1,46 @@
+body, html {
+    height: 100%;
+    margin: 0;
+}
+.container-fluid {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.row {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
+.col-md-4, .col-md-8 {
+    display: flex;
+    flex-direction: column;
+}
+.col-md-4 {
+    background-color: #C2C2C2;
+    padding: 10px;
+}
+.col-md-8 {
+    background-color: white;
+    padding: 10px;
+}
+.fixed-content {
+    flex-shrink: 0;
+}
+.table-container {
+    flex: 1;
+    overflow-y: auto;
+}
+table.dataTable {
+    width: 100% !important;
+}
+form {
+    margin-bottom: 10px;
+}
+footer {
+    background-color: #f8f9fa;
+    text-align: center;
+    padding: 10px 0;
+    flex-shrink: 0;
+}

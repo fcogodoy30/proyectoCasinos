@@ -1,0 +1,34 @@
+.block {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .block h2 {
+    margin-top: 0;
+  }
+  .buttons {
+    margin-top: 20px;
+  }
+  .button {
+    padding: 10px 20px;
+    background-color: #000000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px 0;
+    display: block;
+    width: 100%;
+    text-align: left;
+    min-height: 80px; /* Ajusta la altura fija aquí */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .selected {
+    background-color: #e7e40c !important;
+  }
+  .button h3, .button p {
+    margin: 0;
+  }

@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/agregarmenu.css' %}" />
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+
+<div class="row g-0 text">
+    <div class="col-md-4 p-2" style="background-color: #C2C2C2;">
+        <div class="container">
+            <form action='/agregarmenu/' method="POST">
+                {% csrf_token %}
+                <center><h4 class="py-2" style="color:white">GESTION DE MENU</h4></center> 
+                <div class="mb-3">
+                    <label for="txtTitulo" class="form-label" style="color:white">Titulo</label>
+                    <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Pollo Coñac" required/>
+                </div>
+
+                <label for="txtDiaSemana" class="form-label" style="color:white">Fecha Servicio</label>
+                <input type="date" class="form-control" id="fechaServicio" name="fechaServicio" placeholder="Fecha Servicio" required/>
+
+                {{msm}}
+
+                <div class="row row-cols-2 py-2">
+                    <div class="col">
+                <div class="mb-3">
+                    <label for="estad" class="form-label" style="color:white">Visible a Menu</label>
+                    <select id="estado" name="estado" class="form-control" required>
+                        <option value="">Seleccione </option>
+                        {% for estado in estados %}
+                            <option value="{{ estado.id }}">{{ estado.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+                <div class="col">
+                <div class="mb-3">
+                    <label for="opcion" class="form-label" style="color:white">Opcion Menu</label>
+                    <select id="opcion" name="opcion" class="form-control"required>
+                        <option value="">Seleccione Opcion</option>
+                        {% for opcion in opciones %}
+                            <option value="{{ opcion.id }}">{{ opcion.opciones }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="txtDescripcion" class="form-label" style="color:white">Descripcion</label>
+                <textarea class="form-control" id="descripcion" name="descripcion" rows="3" placeholder="2 agregados, papas fritas, arroz, etc"></textarea>
+            </div>
+                <center><button type="submit" class="btn btn-primary bg-warning">Guardar</button></center>
+            <br>
+            </form>
+
+            {% if messages %}
+            <div class="alert alert-info" role="alert">
+                <ul>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <div class="col-md-8 bg-white">
+        <form method="GET" action="/menu_lista/">
+            <input type="text" id="searchInput" name="q" placeholder="Buscar Titulo" value="{{ query|default_if_none:'' }}">
+            <button type="submit">Buscar</button>
+        </form>
+        
+        <div class="table-container">
+            <table id="menu-table" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Fecha Servicio</th>
+                        <th>Opciones</th>
+                        <th>Visible</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for menu in menus %}
+                    <tr>
+                        <td>{{ menu.titulo }}</td>
+                        <td>{{ menu.fecha_servicio|date:"d/m/Y" }}</td>
+                        <td>{{ menu.id_opciones_id }}</td>
+                        <td>{{ menu.id_estado.nombre }}</td>
+                        <td>
+                            <img src="{% static 'img/editar.png' %}" alt="Editar" title="Editar" width="30" height="30">
+                            <img src="{% static 'img/delete.png' %}" alt="Eliminar" title="Eliminar" width="30" height="30">
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div></div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
+
+<script src="{% static 'js/agregarmenu.js' %}"></script>
+{% endblock %}

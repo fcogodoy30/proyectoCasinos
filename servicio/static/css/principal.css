@@ -1,0 +1,5 @@
+.btn-outline-primary:hover {
+  color: #fff;
+  background-color: yellow;
+  border-color: yellow;
+}
