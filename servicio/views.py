@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
 from .forms import colacionForm
-from .models import CasinoColacion, Estado, Opciones
+from .models import CasinoColacion, Estado, Opciones, Usuarios, TipoUsuario
 from django.contrib import messages 
 from datetime import datetime, timedelta
 from django.utils import timezone
@@ -118,17 +118,17 @@ def menu_lista(request):
 
 def usuarios(request):
     if request.method == 'GET':
-        return render(request,'adminCliente/usuarios.html',
-                {'form' : UserCreationForm
-                 })
+        return redirect('usuarioslistas')
     else:
         if request.POST['password1'] == request.POST['password2']:
             try:
                 user = User.objects.create_user(username=request.POST['username'],
-                       password=request.POST['password1'])
+                       password=request.POST['password1'], first_name=request.POST['first_name'], last_name=request.POST['last_name'])
                 user.save()
                 
-                return redirect ('home')
+                usuario = Usuarios.objects.create(rut = request.POST['rut'])
+                
+                return redirect ('usuarioslistas')
             except IntegrityError:
                return render(request,'adminCliente/usuarios.html',
                 {'form' : UserCreationForm,
@@ -141,6 +141,21 @@ def usuarios(request):
                 "error" : 'Password no coinciden' 
                   })
     
+def usuarioslistas(request):
+    consulta = request.GET.get('q')
+    if consulta:
+        usuarios = Usuarios.objects.filter(rut_icontains=consulta).order_by('nombre')
+    else:
+        usuarios = Usuarios.objects.all().order_by('nombre') 
+    
+    tipousuario = TipoUsuario.objects.all().order_by('id')
+    
+    context = {
+        'usuarios': usuarios,
+        'query': consulta,
+        'tipousuario': tipousuario,
+    }
+    return render(request, 'adminCliente/usuarios.html', context)
 
 def programarmenu(request):
     return render(request,'usuario/programarmenu.html')

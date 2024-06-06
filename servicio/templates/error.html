@@ -3,7 +3,24 @@
 <title>Error</title>
 {% block content %}
 
+<style>
 
-    <h1>{{ message }}</h1>
+    .container {
+        text-align: center;
+        background-color: #ffffff; /* Color de fondo del contenedor */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra */
+    }
 
+    </style>
+
+
+
+<div class="container">
+    <br><h3>{{ message }}</h3>
+    <br>
+    <a href="{% url 'principal' %}"><img src="{% static 'img/volver.png' %}" alt="Editar" title="Editar" width="30" height="30"></a>
+    <h5>Volver</h5>
+</div>
 {% endblock %}

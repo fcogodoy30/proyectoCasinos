@@ -12,6 +12,7 @@ def generar_ticket(request, usuario_id, fecha):
     try:
         datos = CasinoColacion.objects.get(id=usuario_id, fecha_servicio=fecha)
         # Creamos un objeto HttpResponse con el tipo de contenido PDF
+        print("ESTO TRAE",datos.id)
         response = HttpResponse(content_type='application/pdf')
         # Adjuntamos el PDF al response con el nombre de archivo "ticket.pdf"
         response['Content-Disposition'] = 'attachment; filename="ticket.pdf"'
@@ -40,4 +41,4 @@ def generar_ticket(request, usuario_id, fecha):
 
         return response
     except CasinoColacion.DoesNotExist:
-        return render(request, 'error.html', {'message': 'Datos no encontrados'})
+        return render(request, 'error.html', {'message': 'Sin Ticket Disponible'})

@@ -30,6 +30,7 @@ urlpatterns = [
     path('menu_lista/', views.menu_lista, name='menu_lista'),
     path('principal/programarmenu/', views.programarmenu, name='programarmenu'),
     path('adminCliente/usuarios/', views.usuarios, name = 'usuarios'),
+    path('usuarioslistas/', views.usuarioslistas, name='usuarioslistas'),
 
     path('ticket/<int:usuario_id>/<str:fecha>/', ticket.generar_ticket, name='generar_ticket'),
     
