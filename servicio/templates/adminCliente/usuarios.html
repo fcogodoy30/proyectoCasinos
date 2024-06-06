@@ -22,6 +22,7 @@
                             <div class="form-group">
                                 <label for="id_username" style="color:white">Rut</label>
                                 <input type="text" class="form-control" id="id_username" name="username" required>
+                                <input type="hidden" name="activo" id="activo" value="0">
                             </div>
                         </div>
                         <div class="col">
@@ -73,11 +74,12 @@
     </div>
     <!-- TABLA-->
     <div class="col-md-8 bg-white">
-        <form method="GET" action="/menu_lista/">
+        <form method="GET" action="/usuarioslistas/">
             <input type="text" id="searchInput" name="q" placeholder="Buscar Titulo" value="{{ query|default_if_none:'' }}">
             <button type="submit">Buscar</button>
+            <a href="/usuarioslistas/" class="button mostrar-todo">Mostrar Todo</a>
         </form>
-        
+        <br>
         <div class="table-container">
             <table id="menu-table" class="display" style="width:100%">
                 <thead>
@@ -93,7 +95,7 @@
                 <tbody>
                     {% for usuario in usuarios %}
                     <tr>
-                        <td>{{ usuario.titulo }}</td>
+                        <td>{{ usuario.rut }}</td>
                         <td>{{ usuario.nombre }}</td>
                         <td>{{ usuario.apellido }}</td>
                         <td>{% if usuario.activo == 1 %}
@@ -103,7 +105,12 @@
                         {% else %}
                             Desconocido
                         {% endif %}</td>
-                        <td>{{ usuario.id_usuario.tipo }}</td>
+                        <td>{% if usuario.tipo_usuario_id == 1 %}
+                            admin 
+                            {% elif usuario.tipo_usuario_id == 2 %}
+                            usuario
+                            {% endif%}
+                        </td>
                         <td>
                             <img src="{% static 'img/editar.png' %}" alt="Editar" title="Editar" width="30" height="30">
                             <img src="{% static 'img/delete.png' %}" alt="Eliminar" title="Eliminar" width="30" height="30">

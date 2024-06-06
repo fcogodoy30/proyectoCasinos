@@ -122,11 +122,17 @@ def usuarios(request):
     else:
         if request.POST['password1'] == request.POST['password2']:
             try:
+                rut = request.POST.get('username')
+                print("AQUI ESTA EL RUT: ",  rut)
                 user = User.objects.create_user(username=request.POST['username'],
                        password=request.POST['password1'], first_name=request.POST['first_name'], last_name=request.POST['last_name'])
                 user.save()
+                            
+                usuario = Usuarios.objects.create(rut = request.POST['username'], nombre = request.POST['first_name'], 
+                                                  apellido=request.POST['last_name'], activo = True , id_user=user)
+                print(usuario)
                 
-                usuario = Usuarios.objects.create(rut = request.POST['rut'])
+                usuario.save()
                 
                 return redirect ('usuarioslistas')
             except IntegrityError:
@@ -144,9 +150,9 @@ def usuarios(request):
 def usuarioslistas(request):
     consulta = request.GET.get('q')
     if consulta:
-        usuarios = Usuarios.objects.filter(rut_icontains=consulta).order_by('nombre')
+        usuarios = Usuarios.objects.filter(rut__icontains=consulta).order_by('rut')
     else:
-        usuarios = Usuarios.objects.all().order_by('nombre') 
+        usuarios = Usuarios.objects.all().order_by('rut') 
     
     tipousuario = TipoUsuario.objects.all().order_by('id')
     

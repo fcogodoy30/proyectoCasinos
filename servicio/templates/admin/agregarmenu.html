@@ -72,8 +72,9 @@
         <form method="GET" action="/menu_lista/">
             <input type="text" id="searchInput" name="q" placeholder="Buscar Titulo" value="{{ query|default_if_none:'' }}">
             <button type="submit">Buscar</button>
+            <a href="/menu_lista/" class="mostrar-todo">Mostrar Todo</a>
         </form>
-        
+        <br>
         <div class="table-container">
             <table id="menu-table" class="display" style="width:100%">
                 <thead>
