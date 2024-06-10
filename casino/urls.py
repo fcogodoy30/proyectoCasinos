@@ -18,12 +18,14 @@ from django.contrib import admin
 from django.urls import path
 from servicio import views
 from servicio import ticket
+from django.urls import path
+from django.contrib.auth import views as auth_views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
     path('principal/', views.principal, name='principal'),
-    path('registrar/', views.registrarusuario, name = 'registrar'),
     path('cerrarsession/', views.cerrarsession, name = 'cerrarsession'),
     path('iniciosession/', views.iniciosession, name = 'iniciosession'),
     path('agregarmenu/', views.agregarmenu, name='agregarmenu'),
@@ -33,5 +35,12 @@ urlpatterns = [
     path('usuarioslistas/', views.usuarioslistas, name='usuarioslistas'),
 
     path('ticket/<int:usuario_id>/<str:fecha>/', ticket.generar_ticket, name='generar_ticket'),
+    
+     path('cambiar_estado_usuario/', views.cambiar_estado_usuario, name='cambiar_estado_usuario'),
+     path('cambiar_estado_menu/', views.cambiar_estado_menu, name='cambiar_estado_usuario'),
+     
+     path('guardar_selecciones/', views.guardar_selecciones, name='guardar_selecciones'),
+     
+     
     
 ]

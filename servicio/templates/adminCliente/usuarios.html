@@ -3,10 +3,9 @@
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}" />
-
-
-
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+
+<center><h2> Usuarios </h2></center>
 
 <div class="row g-0 text">
     <div class="col-md-4" style="background-color: #C2C2C2;">
@@ -22,7 +21,7 @@
                             <div class="form-group">
                                 <label for="id_username" style="color:white">Rut</label>
                                 <input type="text" class="form-control" id="id_username" name="username" required>
-                                <input type="hidden" name="activo" id="activo" value="0">
+                                <input type="hidden" name="activo" id="activo" value="1">
                             </div>
                         </div>
                         <div class="col">
@@ -32,6 +31,7 @@
                                     <option value="">Seleccione </option>
                                     {% for tipousuarios in tipousuario %}
                                         <option value="{{ tipousuarios.id }}">{{ tipousuarios.tipo }}</option>
+                                        
                                     {% endfor %}
                                 </select>
                             </div>
@@ -69,13 +69,22 @@
                     </div>
                     <br>
                     <center><button type="submit" class="btn btn-primary ">Registrarse</button></center>
+                    {% if messages %}
+                    <div>
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </form>
             </div>
     </div>
     <!-- TABLA-->
     <div class="col-md-8 bg-white">
         <form method="GET" action="/usuarioslistas/">
-            <input type="text" id="searchInput" name="q" placeholder="Buscar Titulo" value="{{ query|default_if_none:'' }}">
+            <input type="text" id="searchInput" name="q" placeholder="Buscar Rut" value="{{ query|default_if_none:'' }}">
             <button type="submit">Buscar</button>
             <a href="/usuarioslistas/" class="button mostrar-todo">Mostrar Todo</a>
         </form>
@@ -98,13 +107,12 @@
                         <td>{{ usuario.rut }}</td>
                         <td>{{ usuario.nombre }}</td>
                         <td>{{ usuario.apellido }}</td>
-                        <td>{% if usuario.activo == 1 %}
-                            Sí
-                        {% elif usuario.activo == 2 %}
-                            No
-                        {% else %}
-                            Desconocido
-                        {% endif %}</td>
+                        <td>
+                            
+                            <div class="form-check form-switch" style="display: flex; justify-content: justify; align-items: center; height: 100%;">
+                              <input class="form-check-input switch-activo" type="checkbox" role="switch" id="flexSwitchCheckChecked" {% if usuario.activo %}checked{% endif %} data-usuario="{{ usuario.id }}">
+                            </div>
+                          </td>
                         <td>{% if usuario.tipo_usuario_id == 1 %}
                             admin 
                             {% elif usuario.tipo_usuario_id == 2 %}

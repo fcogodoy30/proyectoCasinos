@@ -19,11 +19,11 @@
       </button>
     </a>
       <!-- Botón Imprime Ticket -->
-      <a href="{% url 'generar_ticket' usuario_id=35 fecha='2024-06-06' %}">
-      <button type="button" class="btn btn-outline-primary mx-2" style="border-color: black;">
-        <img src="{% static 'img/comer.png' %}" alt="Comer" style="width: 150px; height: 150px;"><br>
-        <span style="color: black;"><strong>Comer</strong></span>
-      </button>
+      <a href="{% url 'generar_ticket' usuario_id=user_data.id fecha=current_date|date:"Y-m-d" %}">
+        <button type="button" class="btn btn-outline-primary mx-2" style="border-color: black;">
+            <img src="{% static 'img/comer.png' %}" alt="Comer" style="width: 150px; height: 150px;"><br>
+            <span style="color: black;"><strong>Comer</strong></span>
+        </button>
     </a>
     </div>
   

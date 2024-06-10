@@ -20,10 +20,9 @@ class CasinoColacion(models.Model):
     titulo = models.CharField(max_length=255)
     descripcion = models.TextField()
     fecha_servicio = models.DateField()
-    fecha_aprobacion = models.DateField(null=True, blank=True)
     id_opciones = models.ForeignKey(Opciones, on_delete=models.CASCADE)
-    id_estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
-    fecha_creacion = models.DateTimeField(auto_now_add=True)  # Agrega la fecha de creación
+    id_estado = models.IntegerField(choices=[(0, 'No visible'), (1, 'visible')], default=1)
+    fecha_actualizacion = models.DateTimeField(auto_now_add=True)  # Agrega la fecha de creación
 
     def __str__(self):
         return self.titulo
@@ -37,10 +36,10 @@ class TipoUsuario(models.Model):
         return self.tipo
 
 class Usuarios(models.Model):
-    rut = models.CharField(max_length=12)  # Supongo que el rut tiene 12 caracteres
+    rut = models.CharField(max_length=12)  # rut tiene 12 caracteres
     nombre = models.CharField(max_length=255)
     apellido = models.CharField(max_length=255)
-    activo = models.BooleanField(default=True)  # Usamos un booleano para indicar si está activo o no
+    activo = models.IntegerField(choices=[(0, 'Inactive'), (1, 'Active')], default=1)
     tipo_usuario = models.ForeignKey(TipoUsuario, on_delete=models.CASCADE)
     id_user = models.OneToOneField(User, on_delete=models.CASCADE)
 
@@ -53,6 +52,7 @@ class Programacion(models.Model):
     fecha_servicio = models.DateField()
     cantidad_almuerzo = models.IntegerField(default=1)  # Por defecto 1 para usuario simple, +1 para superusuario
     fecha_ingreso = models.DateTimeField(auto_now_add=True)
+    impreso = models.IntegerField(choices=[(0, 'No Impreso'), (1, 'Impreso')], default=0)
 
     def __str__(self):
         return f"Programación para {self.usuario} en {self.casino_colacion} el {self.fecha_servicio}"

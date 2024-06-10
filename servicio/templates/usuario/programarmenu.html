@@ -12,23 +12,23 @@
 <div class="container">
   <div class="row">
     {% for fecha, opciones in programacion_ordenada %}
-      <div class="col-md-4">
-        <div class="block">
-          <center>
-          <h4>{{ fecha|date:"l" }}</h4>
-          <h4>{{ fecha|date:"d-m-Y" }}</h4>
-          </center>
-          <div class="options">
-            {% for opcion in opciones %}
-              <button class="button" onclick="selectOption(this)">
-                <h3>{{ opcion.titulo }}</h3>
-                <p>{{ opcion.descripcion }}</p>
-              </button>
-            {% endfor %}
-          </div>
+    <div class="col-md-4">
+      <div class="block" id="block-{{ fecha|date:"Y-m-d" }}">
+        <center>
+        <h4>{{ fecha|date:"l" }}</h4>
+        <h4>{{ fecha|date:"d-m-Y" }}</h4>
+        </center>
+        <div class="options">
+          {% for opcion in opciones %}
+            <button class="button" onclick="selectOption(this)" value="{{ opcion.id }}" data-fecha="{{ fecha|date:"Y-m-d" }}">
+              <h3>{{ opcion.titulo }}</h3>
+              <p>{{ opcion.descripcion }}</p>
+            </button>
+          {% endfor %}
         </div>
       </div>
-    {% endfor %}
+    </div>
+  {% endfor %}
   </div>
   <div class="row justify-content-center">
     <div class="col-md-4 d-flex justify-content-center">

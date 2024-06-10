@@ -15,16 +15,8 @@ setInterval(updateTime, 1000);
 var modal = document.getElementById("loginModal");
 var loginLink = document.getElementById("loginLink");
 
-// When the user clicks the link, open the modal
-loginLink.onclick = function() {
-  modal.style.display = "block";
-};
 
-// When the user clicks on the close button, close the modal
-var closeBtn = document.getElementsByClassName("close")[0];
-closeBtn.onclick = function() {
-  modal.style.display = "none";
-};
+
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
@@ -33,5 +25,18 @@ window.onclick = function(event) {
   }
 };
 
+
+document.addEventListener("DOMContentLoaded", function() {
+  var loginLink = document.getElementById("yourLoginLinkId");
+  var modal = document.getElementById("yourModalId");
+
+  if (loginLink) {
+      loginLink.onclick = function() {
+          if (modal) {
+              modal.style.display = "block";
+          }
+      };
+  }
+});
 
 

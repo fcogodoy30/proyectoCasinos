@@ -75,6 +75,18 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
+# Opcional: Configuración para los tags de Bootstrap si usas Bootstrap
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'debug',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'warning',
+}
+
 ROOT_URLCONF = 'casino.urls'
 
 TEMPLATES = [
@@ -150,4 +162,8 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+LOGIN_REDIRECT_URL = 'principal'  # Esto redirigirá al usuario a la vista 'principal' después de iniciar sesión
+LOGIN_URL = '/'  # Esta es la URL a la que se redirigirá si un usuario no autenticado intenta acceder a una vista protegida
 

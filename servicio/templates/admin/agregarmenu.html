@@ -2,9 +2,8 @@
 {% load static %}
 
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/basecss' %}" />
-
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}" />
 
 <div class="row g-0 text">
     <div class="col-md-4 p-2" style="background-color: #C2C2C2;">
@@ -28,9 +27,8 @@
                     <label for="estad" class="form-label" style="color:white">Visible a Menu</label>
                     <select id="estado" name="estado" class="form-control" required>
                         <option value="">Seleccione </option>
-                        {% for estado in estados %}
-                            <option value="{{ estado.id }}">{{ estado.nombre }}</option>
-                        {% endfor %}
+                            <option value= 1 >Si</option>
+                            <option value= 0 >No</option>
                     </select>
                 </div>
             </div>
@@ -89,10 +87,19 @@
                 <tbody>
                     {% for menu in menus %}
                     <tr>
-                        <td>{{ menu.titulo }}</td>
+                        <td>{{ menu.id }}</td>
                         <td>{{ menu.fecha_servicio|date:"d/m/Y" }}</td>
-                        <td>{{ menu.id_opciones_id }}</td>
-                        <td>{{ menu.id_estado.nombre }}</td>
+                        <td>{{ menu.id_estado}}</td>
+                        
+                        <td>
+                            
+                            <div class="form-check form-switch" style="display: flex; justify-content: justify; align-items: center; height: 100%;">
+                                <input class="form-check-input switch-activo" type="checkbox" role="switch" id="flexSwitchCheckChecked" {% if menu.id_estado %}checked{% endif %} data-id="{{ menu.id }}">
+                                <label class="form-check-label" for="flexSwitchCheckChecked">{{ menu.id }}</label>
+                            </div>
+                          </td>
+
+
                         <td>
                             <img src="{% static 'img/editar.png' %}" alt="Editar" title="Editar" width="30" height="30">
                             <img src="{% static 'img/delete.png' %}" alt="Eliminar" title="Eliminar" width="30" height="30">

@@ -69,3 +69,8 @@ footer {
     font-size: 14px;
     margin: 0 auto;
 }
+
+.form-check-input:checked {
+    background-color: #0d0718; /* Green background when checked */
+    border-color: hsl(59, 100%, 50%);    /* Green border when checked */
+  }
