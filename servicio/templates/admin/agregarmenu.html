@@ -5,6 +5,8 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}" />
 
+<center><h2> Colaciones </h2></center>
+
 <div class="row g-0 text">
     <div class="col-md-4 p-2" style="background-color: #C2C2C2;">
         <div class="container">
@@ -27,8 +29,9 @@
                     <label for="estad" class="form-label" style="color:white">Visible a Menu</label>
                     <select id="estado" name="estado" class="form-control" required>
                         <option value="">Seleccione </option>
-                            <option value= 1 >Si</option>
-                            <option value= 0 >No</option>
+                         {% for estado in estados %}
+                            <option value="{{ estado.id }}">{{ estado.nombre }}</option>
+                         {% endfor %}
                     </select>
                 </div>
             </div>
@@ -87,15 +90,15 @@
                 <tbody>
                     {% for menu in menus %}
                     <tr>
-                        <td>{{ menu.id }}</td>
+                        <td>{{ menu.titulo }}</td>
                         <td>{{ menu.fecha_servicio|date:"d/m/Y" }}</td>
-                        <td>{{ menu.id_estado}}</td>
+                        <td>{{ menu.id_opciones}}</td>
                         
                         <td>
                             
                             <div class="form-check form-switch" style="display: flex; justify-content: justify; align-items: center; height: 100%;">
                                 <input class="form-check-input switch-activo" type="checkbox" role="switch" id="flexSwitchCheckChecked" {% if menu.id_estado %}checked{% endif %} data-id="{{ menu.id }}">
-                                <label class="form-check-label" for="flexSwitchCheckChecked">{{ menu.id }}</label>
+                                
                             </div>
                           </td>
 

@@ -19,9 +19,9 @@
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
-                                <label for="id_username" style="color:white">Rut</label>
-                                <input type="text" class="form-control" id="id_username" name="username" required>
-                                <input type="hidden" name="activo" id="activo" value="1">
+                                <label for="" style="color:white">Rut</label>
+                                <input type="text" class="form-control" id="id_rut" name="username" required>
+                                
                             </div>
                         </div>
                         <div class="col">
@@ -57,18 +57,19 @@
                         <div class="col">
                             <div class="form-group">
                                 <label for="id_password1" style="color:white">Contraseña</label>
-                                <input type="password" class="form-control" id="id_password1" name="password1" required>
+                                <input type="password" class="form-control" id="id_password1" name="password1" maxlength=4 required>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group">
                                 <label for="id_password2" style="color:white">Confirmar contraseña</label>
-                                <input type="password" class="form-control" id="id_password2" name="password2" required>
+                                <input type="password" class="form-control" id="id_password2" name="password2" maxlength=4 required>
                             </div>
                         </div>
                     </div>
                     <br>
-                    <center><button type="submit" class="btn btn-primary ">Registrarse</button></center>
+                    <div id="mensaje-error" class="error-message"></div>
+                    <center><button type="submit" class="btn btn-primary" onclick="return validatePasswords()">Registrarse</button></center>
                     {% if messages %}
                     <div>
                         {% for message in messages %}
@@ -130,10 +131,12 @@
         </div>
     </div>
 </div>
+
+
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-
-
-
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="{% static 'js/usuarios.js' %}"></script>
+<script src="{% static 'js/validaRut.js' %}"></script>
 {% endblock %}

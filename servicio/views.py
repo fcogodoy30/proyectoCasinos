@@ -11,7 +11,7 @@ from collections import defaultdict
 from django.shortcuts import get_object_or_404
 from django.db import transaction
 from django.contrib import messages
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 import json
@@ -40,7 +40,6 @@ def cerrarsession(request):
     return redirect('home')
 
 #INICIO SESION
-
 def iniciosession(request):
     if request.method == 'GET':
         return render(request,'login/login.html')
@@ -54,11 +53,11 @@ def iniciosession(request):
             request.session['user_data'] = {
                 'id' : user.id,
                 'username': user.username,
+                'nombre': user.first_name,
+                'apellido': user.last_name,
                 'email': user.email,
-                # Añade más campos según sea necesario
             }
             return redirect('principal')
-
 
 # Dentro tenemos el guardado del Usuario
 @login_required
@@ -86,7 +85,7 @@ def usuarios(request):
                     messages.error(request, f'El rut {rut} se ha registrado con exito')
                     return redirect ('usuarioslistas')
             except IntegrityError as e:
-                messages.error(request, f'El rut {rut} ya se ecuentra registrado')
+                messages.error(request, f'Rut {rut} ya se ecuentra registrado')
                 return redirect('usuarioslistas')
             
             except Exception as e:
@@ -126,16 +125,40 @@ def diaDeSemana():
 #Programar menu para semana que los usuarios escogen su Menu
 @login_required
 def programarmenu(request):
+        user_id = request.user.id
         iniSem, finSem = diaDeSemana()
-        programacion = CasinoColacion.objects.filter(fecha_servicio__range=[iniSem, finSem], id_estado = 1)
-        print("AQUI OARA POR PROGRA: ", programacion)
-        # Creamos un diccionario para agrupar por fecha
+        
+        # Consultar las programaciones del usuario para la semana
+        programaciones_usuario = Programacion.objects.filter(
+            usuario__id_user=user_id,
+            fecha_servicio__range=[iniSem, finSem]
+        )
+        
+        # Verificar si alguna de las fechas está activa
+        alguna_fecha_activa = any(prog.casino_colacion.id_estado == 1 for prog in programaciones_usuario)
+        
+        # Si alguna fecha está activa, redirige a una página de error o muestra un mensaje
+        if alguna_fecha_activa:
+            semana_activa = Programacion.objects.filter(
+            usuario__id_user=user_id,
+            casino_colacion__id_estado=1
+            ).first()
+            mensaje = f"Ya has seleccionado Menu de Semana activa: del {semana_activa.fecha_servicio} al {semana_activa.fecha_servicio + timedelta(days=6)}."
+            return render(request, 'error.html', {'message': mensaje})
+        
+        # Si no hay fechas activas, continúa con la lógica normal
+        
+        # Obtener la programación de CasinoColacion para la semana
+        programacion = CasinoColacion.objects.filter(fecha_servicio__range=[iniSem, finSem], id_estado=1)
+        
+        # Agrupar por fecha
         programacion_dict = defaultdict(list)
         for registro in programacion:
             programacion_dict[registro.fecha_servicio].append(registro)
         
-        # Convertimos el diccionario a una lista de tuplas para ordenarlos por fecha
+        # Ordenar la programación por fecha
         programacion_ordenada = sorted(programacion_dict.items())
+        
         return render(request, 'usuario/programarmenu.html', {'programacion_ordenada': programacion_ordenada})
 
 #AGREGAR MENU
@@ -176,8 +199,7 @@ def menu_lista(request):
         menu = CasinoColacion.objects.filter(titulo__icontains=consulta).order_by('fecha_servicio')
     else:
         menu = CasinoColacion.objects.all().order_by('fecha_servicio') 
-    
-    print(menu)
+        
     estado = Estado.objects.all().order_by('id')
     opcion = Opciones.objects.all().order_by('id')
     context = {
@@ -203,15 +225,14 @@ def cambiar_estado_usuario(request):
 @csrf_exempt
 def cambiar_estado_menu(request):
     if request.method == 'POST':   
-        id = request.POST.get('data-id')
-        activo = request.POST.get('activo')
-        print("ACAAAAAAAñ ",id )
+        id = request.POST.get('menu_Id')
+        estado = request.POST.get('activo')
+        print("estado ",estado )
         menu = CasinoColacion.objects.get(id=id)
-        menu.id_estado = int(activo)
+        menu.id_estado = estado
         menu.save()
         return JsonResponse({'success': True})    
     return JsonResponse({'success': False})
-
 
 @csrf_exempt  # Desactiva la verificación CSRF para facilitar el desarrollo
 def guardar_selecciones(request):
@@ -238,3 +259,34 @@ def guardar_selecciones(request):
         
         return redirect('principal')  # Redirige a la página principal
     return JsonResponse({'status': 'fail'}, status=400)
+
+
+
+
+@login_required
+def editar_usuario(request, usuario_id):
+    usuario = get_object_or_404(Usuarios, id=usuario_id)
+
+    if request.method == 'POST':
+        usuario.nombre = request.POST['first_name']
+        usuario.apellido = request.POST['last_name']
+        usuario.tipo_usuario_id = request.POST['tipousuario']
+        usuario.id_user.first_name = request.POST['first_name']
+        usuario.id_user.last_name = request.POST['last_name']
+
+        usuario.id_user.save()
+        usuario.save()
+        return JsonResponse({'status': 'success'})
+
+    # Si es una solicitud GET, devuelve los datos del usuario en JSON
+    if request.method == 'GET':
+        user_data = {
+            'id': usuario.id,
+            'rut': usuario.rut,
+            'nombre': usuario.nombre,
+            'apellido': usuario.apellido,
+            'tipo_usuario_id': usuario.tipo_usuario_id,
+        }
+        return JsonResponse({'usuario': user_data})
+
+    return JsonResponse({'status': 'error'}, status=400)

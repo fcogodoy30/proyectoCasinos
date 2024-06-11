@@ -10,16 +10,13 @@ $(document).ready(function() {
     });
 });
 
-
 document.addEventListener('DOMContentLoaded', function() {
     const switchCheckboxes = document.querySelectorAll('.switch-activo');
-  
     switchCheckboxes.forEach(function(checkbox) {
       checkbox.addEventListener('change', function() {
         const menuId = this.getAttribute('data-id');
         const isChecked = this.checked;
-        console.log(menuId)
-  
+        
         fetch('/cambiar_estado_menu/', {
           method: 'POST',
           headers: {

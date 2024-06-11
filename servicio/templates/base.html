@@ -14,6 +14,7 @@
 		
         <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: black;">
             <div class="container-fluid">
+                <!--IMAGEN LOGO-->
                 <a class="navbar-brand" href="/principal">
                     <img src="{% static 'img/logo.jpg' %}" alt="Logo" width="130" height="100">
                 </a>
@@ -21,16 +22,22 @@
                 <span class="navbar-toggler-icon"></span>
               </button>
 
-          
+              
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                   <li class="nav-item">
                     <div id="time" class="alert alert-info" role="alert"></div>
                   </li>
+                  {% if user.is_authenticated %}
+
+                  {% if user.usuarios.tipo_usuario.tipo == 'admin' %}
+
                   <li class="nav-item">
                     <a class="nav-link" href="/principal" style="color: white;">Inicio</a>
                   </li>
-                  {% if user.is_authenticated %}
+
+                  <!-- Administracion-->
+                   
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: white;" >
                       Administracion
@@ -44,16 +51,23 @@
 
                     </ul>
                   </li>
-             
+                  {% endif %}
                 </ul>
-
+                
                 <ul>
+                  <li class="nav-item move-left">
+                  <h4 style="color:dark">{{ user.usuarios.tipo_usuario.tipo }}</h4>
+                  <p>Bienvenido, {{ user.usuarios.nombre }} {{ user.usuarios.apellido }}</p>
+                </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'cerrarsession' %}">Cerrar Sesion</a>
+                      <div class="alert alert-warning ms-auto d-flex justify-content-end" role="alert">
+                        <a class="nav-link" href="{% url 'cerrarsession' %}"><strong>Cerrar Sesion</strong></a>
+                    </div>
                     </li>
            
     
                 </ul>
+                
                 {% endif %}
               </div>
             </div>
