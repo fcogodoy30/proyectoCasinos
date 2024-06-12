@@ -9,19 +9,20 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
 
-<div class="container">
+  <h3 class="titu"> Programa tu Menu de la semana </h3>
+  <br>
   <div class="row">
     {% for fecha, opciones in programacion_ordenada %}
-    <div class="col-md-4">
+    <div class="col-md-2 mx-auto">
       <div class="block" id="block-{{ fecha|date:"Y-m-d" }}">
         <center>
-        <h4>{{ fecha|date:"l" }}</h4>
-        <h4>{{ fecha|date:"d-m-Y" }}</h4>
+        <h5>{{ fecha|date:"l" }}</h5>
+        <h5>{{ fecha|date:"d-m-Y" }}</h5>
         </center>
         <div class="options">
           {% for opcion in opciones %}
-            <button class="button" onclick="selectOption(this)" value="{{ opcion.id }}" data-fecha="{{ fecha|date:"Y-m-d" }}">
-              <h3>{{ opcion.titulo }}</h3>
+            <button type = "button" class="button" onclick="selectOption(this)" value="{{ opcion.id }}" data-fecha="{{ fecha|date:"Y-m-d" }}">
+              <h5>{{ opcion.titulo }}</h5>
               <p>{{ opcion.descripcion }}</p>
             </button>
           {% endfor %}
@@ -30,17 +31,22 @@
     </div>
   {% endfor %}
   </div>
+
   <div class="row justify-content-center">
-    <div class="col-md-4 d-flex justify-content-center">
-      <button type="button" class="btn btn-success btn-lg" onclick="validateSelection()">Enviar</button>
-    </div>
-    </div>
+        <div class="col-md-4 d-flex justify-content-center">
+          <button name = "brnEnviar" type="button" class="btn btn-success btn-lg" onclick="validateSelection()">Enviar</button>
+       
+        <div class="spinner-border visually-hidden" role="status">
+        </div>
+      </div>
+  </div>
+ 
     <br>
     <center><a href="{% url 'principal' %}"><img src="{% static 'img/volver.png' %}" alt="Editar" title="Editar" width="30" height="30"></a><center>
       <h5>Volver</h5>
 
 
-</div>
+
   
   <!-- Scripts de Bootstrap y jQuery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

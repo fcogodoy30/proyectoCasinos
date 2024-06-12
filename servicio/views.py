@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
@@ -18,7 +17,6 @@ import json
 
 
 #login
-
 def home(request):
     return render(request,'login/login.html')
 
@@ -76,7 +74,6 @@ def usuarios(request):
                     
                     user = User.objects.create_user(username=rut, password=password, first_name=first_name, last_name=last_name)
                     user.save()
-                    
                     # Obtener la instancia de TipoUsuario
                     tipo_usuario = get_object_or_404(TipoUsuario, pk=tipoUsu)
                                             
@@ -95,6 +92,7 @@ def usuarios(request):
             messages.error(request, 'Contraseña no coinciden')
             return redirect('usuarioslistas')
 
+# lista de usuarios
 @login_required
 def usuarioslistas(request):
     consulta = request.GET.get('q')
@@ -210,6 +208,7 @@ def menu_lista(request):
     }
     return render(request, 'admin/agregarmenu.html', context)
 
+#Cambia el estado del usuario
 @csrf_exempt
 def cambiar_estado_usuario(request):
     if request.method == 'POST':
@@ -237,14 +236,9 @@ def cambiar_estado_menu(request):
 @csrf_exempt  # Desactiva la verificación CSRF para facilitar el desarrollo
 def guardar_selecciones(request):
     if request.method == 'POST':
-
         data = json.loads(request.body)
-        print("ENTRAMOS :", data)
-        print("authe", request.user.id)
         usuario = Usuarios.objects.get(id_user_id=request.user.id)  # Asegúrate de que el usuario esté autenticado
                
-        print("ENTRAMOS2 USU:",usuario)
-        
         for item in data:
             fecha_servicio = datetime.strptime(item['fecha_servicio'], '%Y-%m-%d').date()
             casino_colacion = CasinoColacion.objects.get(id=item['opcion_id'])
@@ -257,7 +251,7 @@ def guardar_selecciones(request):
                 impreso=0
             )
         
-        return redirect('principal')  # Redirige a la página principal
+        return JsonResponse({ 'status': 'success' })  # Redirige a la página principal
     return JsonResponse({'status': 'fail'}, status=400)
 
 

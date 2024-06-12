@@ -26,8 +26,10 @@ function validateSelection() {
   });
 
   if (allSelected) {
-    alert("Formulario enviado con éxito.");
-
+    
+    document.querySelector('[name="brnEnviar"]').style.display = 'none';
+    document.querySelector('.spinner-border').style.display = 'block';
+  
     // Enviar los datos seleccionados al servidor usando fetch (AJAX)
     fetch('/guardar_selecciones/', {
       method: 'POST',
@@ -41,13 +43,19 @@ function validateSelection() {
     .then(data => {
       if (data.status === 'success') {
         console.log('Success:', data);
-        // Aquí puedes manejar la respuesta del servidor
+        
+        window.location.href = '/principal/?message=' + encodeURIComponent('Menu enviado Correctamente');
+
+
       } else {
         console.error('Error:', data);
+        window.location.href = `/principal/?message=${encodeURIComponent(data.message)}`;
+
       }
     })
     .catch((error) => {
       console.error('Error:', error);
+      window.location.href = `/principal/?message=${encodeURIComponent('Ocurrió un error al procesar la solicitud.')}`;
     });
 
   } else {
@@ -71,3 +79,6 @@ function getCookie(name) {
   }
   return cookieValue;
 }
+
+
+
