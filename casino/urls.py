@@ -28,7 +28,11 @@ urlpatterns = [
     path('principal/', views.principal, name='principal'),
     path('cerrarsession/', views.cerrarsession, name = 'cerrarsession'),
     path('iniciosession/', views.iniciosession, name = 'iniciosession'),
+    
     path('agregarmenu/', views.agregarmenu, name='agregarmenu'),
+    path('edit_agregarmenu//<int:id>/', views.editamenu, name='editarMenu'),
+    
+    
     path('menu_lista/', views.menu_lista, name='menu_lista'),
     path('principal/programarmenu/', views.programarmenu, name='programarmenu'),
     path('adminCliente/usuarios/', views.usuarios, name = 'usuarios'),

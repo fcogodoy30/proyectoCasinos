@@ -159,6 +159,27 @@ def programarmenu(request):
         
         return render(request, 'usuario/programarmenu.html', {'programacion_ordenada': programacion_ordenada})
 
+#EDITAR MENU
+@login_required
+def editamenu(request, id):
+    consulta = request.GET.get('q')
+    if consulta:
+        menu = CasinoColacion.objects.filter(titulo__icontains=consulta).order_by('fecha_servicio')
+    else:
+        menu = CasinoColacion.objects.filter(id=id)
+        
+    estado = Estado.objects.all().order_by('id')
+    opcion = Opciones.objects.all().order_by('id')
+    context = {
+        'menus': menu,
+        'query': consulta,
+        'estados': estado,
+        'opciones': opcion
+    }
+    print(context)
+    return render(request, 'admin/edit_agergarmenu.html', context)
+    
+
 #AGREGAR MENU
 @login_required
 def agregarmenu(request):
@@ -253,9 +274,6 @@ def guardar_selecciones(request):
         
         return JsonResponse({ 'status': 'success' })  # Redirige a la página principal
     return JsonResponse({'status': 'fail'}, status=400)
-
-
-
 
 @login_required
 def editar_usuario(request, usuario_id):

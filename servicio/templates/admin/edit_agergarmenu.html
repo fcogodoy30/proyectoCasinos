@@ -10,17 +10,19 @@
 <div class="row g-0 text">
     <div class="col-md-4 p-2" style="background-color: #C2C2C2;">
         <div class="container">
+            {% csrf_token %}
             <form action='/agregarmenu/' method="POST">
-                {% csrf_token %}
-                <center><h4 class="py-2" style="color:white">GESTION DE MENU</h4></center> 
+                <center><h4 class="py-2" style="color:white">EDITAR MENU</h4></center> 
                 <div class="mb-3">
+                    {% for menu in menus %}
                     <label for="txtTitulo" class="form-label" style="color:white">Titulo</label>
-                    <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Pollo Coñac" required/>
+                    <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Pollo Coñac" value ="{{ menu.titulo }}" required/>
+                   
                 </div>
 
                 <label for="txtDiaSemana" class="form-label" style="color:white">Fecha Servicio</label>
-                <input type="date" class="form-control" id="fechaServicio" name="fechaServicio" placeholder="Fecha Servicio" required/>
-
+                <input type="date" class="form-control" id="fechaServicio" name="fechaServicio" placeholder="" value="{{ menu.fecha_servicio|date:'Y-m-d' }}" required/>
+                <h1>{{ menu.fechaServicio }}</h1>
                 {{msm}}
 
                 <div class="row row-cols-2 py-2">
@@ -30,7 +32,7 @@
                     <select id="estado" name="estado" class="form-control" required>
                         <option value="">Seleccione </option>
                          {% for estado in estados %}
-                            <option value="{{ estado.id }}">{{ estado.nombre }}</option>
+                         <option value="{{ estado.id }}" {% if estado.id == menu.id_estado %} selected {% endif %}>{{ estado.nombre }}</option>
                          {% endfor %}
                     </select>
                 </div>
@@ -38,10 +40,10 @@
                 <div class="col">
                 <div class="mb-3">
                     <label for="opcion" class="form-label" style="color:white">Opcion Menu</label>
-                    <select id="opcion" name="opcion" class="form-control"required>
+                    <select id="opcion" name="opcion" class="form-control" required>
                         <option value="">Seleccione Opcion</option>
                         {% for opcion in opciones %}
-                            <option value="{{ opcion.id }}">{{ opcion.opciones }}</option>
+                            <option value="{{ opcion.id }}" {% if opcion.id == menu.id_opciones %} selected {% endif %}>{{ opcion.opciones }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -50,12 +52,12 @@
 
             <div class="mb-3">
                 <label for="txtDescripcion" class="form-label" style="color:white">Descripcion</label>
-                <textarea class="form-control" id="descripcion" name="descripcion" rows="3" placeholder="2 agregados, papas fritas, arroz, etc"></textarea>
+                <textarea class="form-control" id="descripcion" name="descripcion" rows="3" placeholder="" value = "">{{ menu.descripcion }}</textarea>
             </div>
                 <center><button type="submit" class="btn btn-primary bg-warning">Guardar</button></center>
             <br>
             </form>
-
+            {% endfor %}
             {% if messages %}
             <div class="alert alert-info" role="alert">
                 <ul>
@@ -106,7 +108,7 @@
 
 
                         <td>
-                            <a href="{% url 'editarMenu' id=menu.id %}"> <img src="{% static 'img/editar.png' %}" alt="Editar" title="Editar" width="30" height="30" ></a>
+                            <img src="{% static 'img/editar.png' %}" alt="Editar" title="Editar" width="30" height="30">
                             <img src="{% static 'img/delete.png' %}" alt="Eliminar" title="Eliminar" width="30" height="30">
                         </td>
                     </tr>
