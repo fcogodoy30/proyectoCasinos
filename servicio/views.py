@@ -53,9 +53,58 @@ def iniciosession(request):
                 'username': user.username,
                 'nombre': user.first_name,
                 'apellido': user.last_name,
-                'email': user.email,
+                'super': user.is_superuser
+                
             }
             return redirect('principal')
+
+#Editar Usuarios
+@login_required
+def editusuario(request, id):
+    if request.method == 'GET':
+        consulta = request.GET.get('q')
+        
+        if consulta:
+            usuario = Usuarios.objects.filter(rut__icontains=consulta).order_by('rut')
+        else:
+            usuario = Usuarios.objects.filter(id_user_id=id)
+        
+        print("USUARIO", usuario)
+        tipousuario = TipoUsuario.objects.all().order_by('id')
+        context = {
+            'usuarios': usuario,
+            'query': consulta,
+            'tipousuario': tipousuario,
+            'id_user' : id
+        }
+        return render(request, 'adminCliente/edit_usuarios.html', context)
+    else:
+        
+        id_user = request.POST.get('id_user')
+        nombre = request.POST.get('first_name')
+        apellido = request.POST.get('last_name')
+        password = request.POST.get('password1')
+        tiposus = request.POST.get('tipousuario')
+
+        # Aqui se guarda la tabla User para Login
+        user = get_object_or_404(User, id=id_user)
+        user.first_name = nombre
+        user.last_name = apellido
+        if password:
+            user.set_password(password)  # Actualizamos el Password
+        user.save()
+        
+        tipo_usuario = get_object_or_404(TipoUsuario, pk=tiposus)
+        
+        # Aqui guardamos los datos en la tabla del usuario
+        usuario = get_object_or_404(Usuarios, id_user=id_user)
+        usuario.nombre = nombre
+        usuario.apellido = apellido
+        usuario.tipo_usuario = tipo_usuario
+        usuario.save()
+        
+        messages.success(request, "Registro Actualizado.")
+        return redirect('usuarioslistas')
 
 # Dentro tenemos el guardado del Usuario
 @login_required
@@ -79,17 +128,17 @@ def usuarios(request):
                                             
                     usuario = Usuarios.objects.create(rut = rut, nombre = first_name, apellido=last_name,  id_user=user, tipo_usuario = tipo_usuario)
                     usuario.save()
-                    messages.error(request, f'El rut {rut} se ha registrado con exito')
+                    messages.success(request, f'El rut {rut} se ha registrado con exito')
                     return redirect ('usuarioslistas')
             except IntegrityError as e:
-                messages.error(request, f'Rut {rut} ya se ecuentra registrado')
+                messages.warning(request, f'Rut {rut} ya se ecuentra registrado')
                 return redirect('usuarioslistas')
             
             except Exception as e:
                 messages.error(request, f"Ocurrió un error al guardar el usuario: {e}")
                 return redirect('usuarioslistas')                
         else: 
-            messages.error(request, 'Contraseña no coinciden')
+            messages.warning(request, 'Contraseña no coinciden')
             return redirect('usuarioslistas')
 
 # lista de usuarios
@@ -101,7 +150,7 @@ def usuarioslistas(request):
     else:
         usuarios = Usuarios.objects.all().order_by('rut') 
     
-    tipousuario = TipoUsuario.objects.all().order_by('id')
+    tipousuario = TipoUsuario.objects.filter(id__in=[1, 2]).order_by('id')
     
     context = {
         'usuarios': usuarios,
@@ -182,12 +231,13 @@ def editamenu(request, id):
     else:
         id_menu = request.POST.get('id_menu')
         titulo = request.POST.get('titulo')
-        fecha_servicio = request.POST.get('fecha_servicio')
+        fecha_servicio = request.POST.get('fechaServicio')
         descripcion = request.POST.get('descripcion')
         # obtengo el objeto
         menu_item = get_object_or_404(CasinoColacion, id=id_menu)
         # Actualizamos Campos
         menu_item.titulo = titulo
+        menu_item.fecha_servicio = fecha_servicio
         menu_item.descripcion = descripcion
         menu_item.save() #guarda
         messages.success(request, "Registro Actualizado.")
@@ -303,30 +353,5 @@ def guardar_selecciones(request):
         return JsonResponse({ 'status': 'success' })  # Redirige a la página principal
     return JsonResponse({'status': 'fail'}, status=400)
 
-@login_required
-def editar_usuario(request, usuario_id):
-    usuario = get_object_or_404(Usuarios, id=usuario_id)
 
-    if request.method == 'POST':
-        usuario.nombre = request.POST['first_name']
-        usuario.apellido = request.POST['last_name']
-        usuario.tipo_usuario_id = request.POST['tipousuario']
-        usuario.id_user.first_name = request.POST['first_name']
-        usuario.id_user.last_name = request.POST['last_name']
-
-        usuario.id_user.save()
-        usuario.save()
-        return JsonResponse({'status': 'success'})
-
-    # Si es una solicitud GET, devuelve los datos del usuario en JSON
-    if request.method == 'GET':
-        user_data = {
-            'id': usuario.id,
-            'rut': usuario.rut,
-            'nombre': usuario.nombre,
-            'apellido': usuario.apellido,
-            'tipo_usuario_id': usuario.tipo_usuario_id,
-        }
-        return JsonResponse({'usuario': user_data})
-
-    return JsonResponse({'status': 'error'}, status=400)
+    

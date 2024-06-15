@@ -9,14 +9,18 @@
     <div class="col-md-4" style="background-color: #C2C2C2;">
          <!-- FORMULARIO DE USUARIO-->
             <div class="container">
-                <form action = "/adminCliente/usuarios/" method="post">
-                    {% csrf_token %}
-                    <center><h4 class="py-2" style="color:white">REGISTRO DE USUARIOS</h4></center> 
+                
+                <form action="{% url 'editusuario' id_user %}" method="post">
+                {% csrf_token %}
+                
+                    <center><h4 class="py-2" style="color:white">EDITAR USUARIO</h4></center> 
+                    <input type="text" name="id_user" value="{{ id_user }}">
                     <div class="row">
-                        <div class="col">
+                        <div class="col"> 
                             <div class="form-group">
+                                {% for usuario in usuarios %}
                                 <label for="" style="color:white">Rut</label>
-                                <input type="text" class="form-control" id="id_rut" name="username" placeholder="Ej: 12.345.678-9" required>
+                                <input type="text" class="form-control" id="id_rut" name="username" value="{{ usuario.id_user.username }}" readonly>
                                 
                             </div>
                         </div>
@@ -32,22 +36,24 @@
                                 </select>
                             </div>
                         </div>
+                        
                     </div>
                     <br>
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
                                 <label for="id_first_name" style="color:white">Nombre</label>
-                                <input type="text" class="form-control" id="id_first_name" name="first_name" placeholder="Ej: Juan" required>
+                                <input type="text" class="form-control" id="id_first_name" name="first_name" placeholder="Ej: Juan" value="{{ usuario.id_user.first_name }}" required>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group">
                                 <label for="id_last_name" style="color:white">Apellido</label>
-                                <input type="text" class="form-control" id="id_last_name" name="last_name" placeholder="Ej: Palacios" required>
+                                <input type="text" class="form-control" id="id_last_name" name="last_name" placeholder="Ej: Palacios" value="{{ usuario.id_user.last_name }}" required>
                             </div>
                         </div>
                     </div>
+                    
                     <br>
                     <div class="row">
                         <div class="col">
@@ -65,7 +71,9 @@
                     </div>
                     <br>
                     <div id="mensaje-error" class="error-message"></div>
-                    <center><button type="submit" class="btn btn-primary bg-warning" onclick="return validatePasswords()">Registrar</button></center>
+                    <center><button type="submit" class="btn btn-primary bg-warning" onclick="return validatePasswords()">Actualizar</button></center>
+
+                    {% endfor %}
                     {% if messages %}
                     <div>
                         {% for message in messages %}
@@ -95,8 +103,8 @@
                         <th>Nombre</th>
                         <th>Apellido</th>
                         <th>Activo</th>
-                        <th>tipo Usuario</th>
-                        <th>Acción</th>
+                        <th>tipo</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -117,13 +125,7 @@
                             usuario
                             {% endif%}
                         </td>
-                        <td>
-                            <a href="{% url 'editusuario' id=usuario.id_user.id %}"> <img src="{% static 'img/editar.png' %}" alt="Editar" title="Editar" width="30" height="30" ></a>
-                            
-                           <!-- <a href="{% url 'eliminarMenu' id=usuario.id %}" onclick="return confirm('¿Estás seguro de que quieres eliminar este menú?');">
-                                <img src="{% static 'img/delete.png' %}" alt="Eliminar" title="Eliminar" width="30" height="30">
-                            </a> -->
-                        </td>
+                       
                     </tr>
                     {% endfor %}
                 </tbody>

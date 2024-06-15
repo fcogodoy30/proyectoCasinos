@@ -29,21 +29,26 @@ urlpatterns = [
     path('cerrarsession/', views.cerrarsession, name = 'cerrarsession'),
     path('iniciosession/', views.iniciosession, name = 'iniciosession'),
     
+    path('principal/programarmenu/', views.programarmenu, name='programarmenu'),
+    path('guardar_selecciones/', views.guardar_selecciones, name='guardar_selecciones'),
+    path('ticket/<int:usuario_id>/<str:fecha>/', ticket.generar_ticket, name='generar_ticket'),
+    
+    path('menu_lista/', views.menu_lista, name='menu_lista'),
     path('agregarmenu/', views.agregarmenu, name='agregarmenu'),
     path('edit_agregarmenu/<int:id>/', views.editamenu, name='editarMenu'),
     path('eliminar_menu/<int:id>/', views.eliminarMenu, name='eliminarMenu'),
-    
-    path('menu_lista/', views.menu_lista, name='menu_lista'),
-    path('principal/programarmenu/', views.programarmenu, name='programarmenu'),
-    path('adminCliente/usuarios/', views.usuarios, name = 'usuarios'),
+     
     path('usuarioslistas/', views.usuarioslistas, name='usuarioslistas'),
+    path('adminCliente/usuarios/', views.usuarios, name = 'usuarios'),
+    path('adminCliente/edit_usuarios/<int:id>/', views.editusuario, name = 'editusuario'),
+    
 
-    path('ticket/<int:usuario_id>/<str:fecha>/', ticket.generar_ticket, name='generar_ticket'),
+    
     
      path('cambiar_estado_usuario/', views.cambiar_estado_usuario, name='cambiar_estado_usuario'),
      path('cambiar_estado_menu/', views.cambiar_estado_menu, name='cambiar_estado_usuario'),
      
-     path('guardar_selecciones/', views.guardar_selecciones, name='guardar_selecciones'),
+     
      
      
     

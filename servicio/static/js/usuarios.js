@@ -46,43 +46,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-  $(document).ready(function() {
-    $('.btn-edit').click(function() {
-        const userId = $(this).data('id');
-        
-        // Obtener los datos del usuario y llenar el formulario
-        $.ajax({
-            url: '/usuarios/editar/' + userId + '/',
-            type: 'GET',
-            success: function(response) {
-                $('#usuario_id').val(response.usuario.id);
-                $('#id_username').val(response.usuario.rut);
-                $('#tipousuario').val(response.usuario.tipo_usuario_id);
-                $('#id_first_name').val(response.usuario.nombre);
-                $('#id_last_name').val(response.usuario.apellido);
-                $('#editUserModal').modal('show');
-            }
-        });
-    });
-
-    $('#saveChanges').click(function() {
-        const userId = $('#usuario_id').val();
-        const data = $('#editUserForm').serialize();
-
-        $.ajax({
-            url: '/usuarios/editar/' + userId + '/',
-            type: 'POST',
-            data: data,
-            success: function(response) {
-                if (response.status === 'success') {
-                    location.reload(); // Recargar la página después de guardar los cambios
-                } else {
-                    alert('Hubo un error al actualizar el usuario.');
-                }
-            }
-        });
-    });
-});
 
 
 document.addEventListener('DOMContentLoaded', function() {

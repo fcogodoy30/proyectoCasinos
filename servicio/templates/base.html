@@ -32,28 +32,30 @@
                   </li>
                   {% if user.is_authenticated %}
 
-                  {% if user.usuarios.tipo_usuario.tipo == 'admin' %}
+                  {% if user.usuarios.tipo_usuario.tipo != 'Usuario' %}
 
                   <li class="nav-item">
                     <a class="nav-link" href="/principal" style="color: white;">Inicio</a>
                   </li>
 
                   <!-- Administracion-->
-                   
+                  
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: white;" >
                       Administracion
                     </a>
                     <ul class="dropdown-menu">
+                      {% if user.usuarios.tipo_usuario.tipo == 'super' %}
                       <li><a class="dropdown-item" href="{% url 'agregarmenu' %}" >Programacion Menu</a></li>
-                                                                  
                       <li><hr class="dropdown-divider"></li>
+                      {% endif %} 
                       <li><a class="dropdown-item" href="{% url 'usuarios' %}">Usuarios</a></li>
-
-
+                      
+                    
                     </ul>
+
                   </li>
-                  {% endif %}
+                  {% endif %}  
                 </ul>
                 
                 <ul>
