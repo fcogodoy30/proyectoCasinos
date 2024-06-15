@@ -120,7 +120,7 @@ def diaDeSemana():
     finSem = inicioSem + timedelta(days=4)   
     return inicioSem, finSem
 
-#Programar menu para semana que los usuarios escogen su Menu
+#Programar menu para semana 
 @login_required
 def programarmenu(request):
         user_id = request.user.id
@@ -162,24 +162,37 @@ def programarmenu(request):
 #EDITAR MENU
 @login_required
 def editamenu(request, id):
-    consulta = request.GET.get('q')
-    if consulta:
-        menu = CasinoColacion.objects.filter(titulo__icontains=consulta).order_by('fecha_servicio')
+    if request.method == 'GET':
+        consulta = request.GET.get('q')
+        if consulta:
+            menu = CasinoColacion.objects.filter(titulo__icontains=consulta).order_by('fecha_servicio')
+        else:
+            menu = CasinoColacion.objects.filter(id=id)
+            
+        estado = Estado.objects.all().order_by('id')
+        opcion = Opciones.objects.all().order_by('id')
+        context = {
+            'menus': menu,
+            'query': consulta,
+            'estados': estado,
+            'opciones': opcion,
+            'id_menu': id
+        }
+        return render(request, 'admin/edit_agergarmenu.html', context)
     else:
-        menu = CasinoColacion.objects.filter(id=id)
+        id_menu = request.POST.get('id_menu')
+        titulo = request.POST.get('titulo')
+        fecha_servicio = request.POST.get('fecha_servicio')
+        descripcion = request.POST.get('descripcion')
+        # obtengo el objeto
+        menu_item = get_object_or_404(CasinoColacion, id=id_menu)
+        # Actualizamos Campos
+        menu_item.titulo = titulo
+        menu_item.descripcion = descripcion
+        menu_item.save() #guarda
+        messages.success(request, "Registro Actualizado.")
+        return redirect('menu_lista')
         
-    estado = Estado.objects.all().order_by('id')
-    opcion = Opciones.objects.all().order_by('id')
-    context = {
-        'menus': menu,
-        'query': consulta,
-        'estados': estado,
-        'opciones': opcion
-    }
-    print(context)
-    return render(request, 'admin/edit_agergarmenu.html', context)
-    
-
 #AGREGAR MENU
 @login_required
 def agregarmenu(request):
@@ -206,10 +219,25 @@ def agregarmenu(request):
                 registro = CasinoColacion(titulo = titulo ,descripcion = desc, fecha_servicio = fechaSer, 
                                         id_estado = estado, id_opciones_id = opcion)
                 registro.save()
+                messages.success(request, "Menu Guardado con exito.")
                 return redirect('menu_lista')
         except IntegrityError as e:
             messages.error(request, "Error al agregar el menu.")
-    
+
+#ELIMINAR MENU
+@login_required
+def eliminarMenu(request, id):
+    menu = get_object_or_404(CasinoColacion, id=id)
+        
+    try:
+        # Confirmación de eliminación
+        menu.delete()
+        messages.success(request, "Menú eliminado correctamente.")
+        return redirect('menu_lista')
+    except Exception as e:
+               messages.error(request, f"Error al eliminar el menú: {e}")
+    return redirect('menu_lista')  # Redirige a la lista de menús después de cualquier acción
+        
 #LISTA DEL MENU    
 @login_required
 def menu_lista(request):

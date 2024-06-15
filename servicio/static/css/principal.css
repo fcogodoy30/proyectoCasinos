@@ -5,8 +5,16 @@
 }
 
 .titu {
-  font-family: 'Lobster', cursive; /* Cambiar la fuente */
+  font-family: 'Impact', cursive; /* Cambiar la fuente */
   text-align: center; /* Centrar el texto */
-  font-size: 2em; /* Cambiar el tamaño de la fuente (opcional) */
+  font-size: 4em; /* Cambiar el tamaño de la fuente (opcional) */
   color: #333; /* Cambiar el color del texto (opcional) */
+}
+
+
+.literal {
+  font-family: 'Cambria', cursive; /* Cambiar la fuente */
+  text-align: center; /* Centrar el texto */
+  font-size: 1em; /* Cambiar el tamaño de la fuente (opcional) */
+  color: #000000; /* Cambiar el color del texto (opcional) */
 }

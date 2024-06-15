@@ -30,8 +30,8 @@ urlpatterns = [
     path('iniciosession/', views.iniciosession, name = 'iniciosession'),
     
     path('agregarmenu/', views.agregarmenu, name='agregarmenu'),
-    path('edit_agregarmenu//<int:id>/', views.editamenu, name='editarMenu'),
-    
+    path('edit_agregarmenu/<int:id>/', views.editamenu, name='editarMenu'),
+    path('eliminar_menu/<int:id>/', views.eliminarMenu, name='eliminarMenu'),
     
     path('menu_lista/', views.menu_lista, name='menu_lista'),
     path('principal/programarmenu/', views.programarmenu, name='programarmenu'),

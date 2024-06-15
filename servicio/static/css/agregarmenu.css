@@ -44,3 +44,10 @@ footer {
     padding: 10px 0;
     flex-shrink: 0;
 }
+
+.titu {
+    font-family: 'Impact', cursive; /* Cambiar la fuente */
+    text-align: center; /* Centrar el texto */
+    font-size: 4em; /* Cambiar el tamaño de la fuente (opcional) */
+    color: #333; /* Cambiar el color del texto (opcional) */
+  }

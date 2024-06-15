@@ -5,8 +5,6 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}" />
 
-<center><h2> Colaciones </h2></center>
-
 <div class="row g-0 text">
     <div class="col-md-4 p-2" style="background-color: #C2C2C2;">
         <div class="container">
@@ -70,6 +68,8 @@
     </div>
 
     <div class="col-md-8 bg-white">
+        <center><h3 class="titu">Lista Menu</h3></center>
+        
         <form method="GET" action="/menu_lista/">
             <input type="text" id="searchInput" name="q" placeholder="Buscar Menu" value="{{ query|default_if_none:'' }}">
             <button type="submit">Buscar</button>
@@ -107,7 +107,11 @@
 
                         <td>
                             <a href="{% url 'editarMenu' id=menu.id %}"> <img src="{% static 'img/editar.png' %}" alt="Editar" title="Editar" width="30" height="30" ></a>
-                            <img src="{% static 'img/delete.png' %}" alt="Eliminar" title="Eliminar" width="30" height="30">
+                            
+                            <a href="{% url 'eliminarMenu' id=menu.id %}" onclick="return confirm('¿Estás seguro de que quieres eliminar este menú?');">
+                                <img src="{% static 'img/delete.png' %}" alt="Eliminar" title="Eliminar" width="30" height="30">
+                            </a>
+
                         </td>
                     </tr>
                     {% endfor %}
