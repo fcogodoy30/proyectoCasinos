@@ -11,6 +11,9 @@ function validateSelection() {
   let allSelected = true;
   const selections = [];
 
+  alert(allSelected);
+  alert(selections);
+
   blocks.forEach(block => {
     const selectedButton = block.querySelector('.button.selected');
     if (!selectedButton) {
@@ -18,9 +21,11 @@ function validateSelection() {
     } else {
       const selectedValue = selectedButton.value;
       const fechaServicio = selectedButton.getAttribute('data-fecha');
+      const cant = block.querySelector(`input[id^="quantity-"]`).value;
       selections.push({
         fecha_servicio: fechaServicio,
-        opcion_id: selectedValue
+        opcion_id: selectedValue,
+        cant: cant
       });
     }
   });
@@ -29,7 +34,7 @@ function validateSelection() {
     
     document.querySelector('[name="brnEnviar"]').style.display = 'none';
     document.querySelector('.spinner-border').style.display = 'block';
-  
+    alert("para")
     // Enviar los datos seleccionados al servidor usando fetch (AJAX)
     fetch('/guardar_selecciones/', {
       method: 'POST',
@@ -82,3 +87,16 @@ function getCookie(name) {
 
 
 
+function decrement(id) {
+  let quantityInput = document.getElementById(id);
+  let currentValue = parseInt(quantityInput.value);
+  if (currentValue > 1) {
+      quantityInput.value = currentValue - 1;
+  }
+}
+
+function increment(id) {
+  let quantityInput = document.getElementById(id);
+  let currentValue = parseInt(quantityInput.value);
+  quantityInput.value = currentValue + 1;
+}

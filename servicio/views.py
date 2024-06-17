@@ -337,21 +337,20 @@ def guardar_selecciones(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         usuario = Usuarios.objects.get(id_user_id=request.user.id)  # Asegúrate de que el usuario esté autenticado
-               
+        
         for item in data:
             fecha_servicio = datetime.strptime(item['fecha_servicio'], '%Y-%m-%d').date()
             casino_colacion = CasinoColacion.objects.get(id=item['opcion_id'])
+            cantidad = item['cant']
 
             Programacion.objects.create(
                 usuario=usuario,
                 casino_colacion=casino_colacion,
                 fecha_servicio=fecha_servicio,
-                cantidad_almuerzo=1,
+                cantidad_almuerzo=cantidad,
                 impreso=0
             )
         
         return JsonResponse({ 'status': 'success' })  # Redirige a la página principal
     return JsonResponse({'status': 'fail'}, status=400)
 
-
-    

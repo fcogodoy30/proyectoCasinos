@@ -39,3 +39,21 @@
     font-size: 2em; /* Cambiar el tamaño de la fuente (opcional) */
     color: #333; /* Cambiar el color del texto (opcional) */
   }
+
+  .has-addons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px; /* Ajusta el margen según sea necesario */
+}
+
+.has-addons button {
+    padding: 5px 10px;
+}
+
+.has-addons input {
+    width: 50px;
+    text-align: center;
+    margin: 0 5px;
+}
+

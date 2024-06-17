@@ -40,3 +40,19 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
+
+let timeout;
+
+function resetTimeout() {
+    clearTimeout(timeout);
+    timeout = setTimeout(function() {
+        // Realizar alguna acción cuando el usuario esté inactivo, por ejemplo, redirigir
+        window.location.href = '/cerrarsession/';  // Redirigir a la página de logout o login
+    }, 180000);  // 15 minutos en milisegundos (900000)
+}
+
+// Llama a resetTimeout() cuando hay actividad relevante (click, tecla presionada, etc.)
+document.addEventListener('click', resetTimeout);
+document.addEventListener('keypress', resetTimeout);
+resetTimeout();  // Inicia el temporizador al cargar la página
+
