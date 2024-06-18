@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 
@@ -25,34 +26,34 @@ SESSION_INACTIVITY_TIMEOUT = 400  # 900 segundos = 15 minutos
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-o=ag8kv2w6evj2d3s)^7=61z%(#tltz4!qpe3w%(%0=l7)35qk'
 
-#DATABASES = {
-#    'default': {
-#       'ENGINE': 'django.db.backends.mysql',
-#        'NAME': 'b5ml3su6hr508ktzvshf',
-#       'USER': 'u6nku6n06iuzjjnp',
-#        'PASSWORD': 'Aw8WXtg6GB5IkTcXvfXr',
-#        'HOST': 'b5ml3su6hr508ktzvshf-mysql.services.clever-cloud.com',  # O la dirección IP de tu servidor MySQL
-#        'PORT': '3306',       # El puerto de MySQL (por defecto es 3306)
-#    }
-#}
-
-
 DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'CasinoServicios',
-            'USER': 'root',
-            'PASSWORD': '2022',
-            'HOST': 'localhost',
-            'PORT': '3306',
-        }
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'u973637520_casino',
+        'USER': 'u973637520_CasinoDB',
+        'PASSWORD': 'GaUWf/Y7',
+        'HOST': 'srv1435.hstgr.io',  # O la dirección IP de tu servidor MySQL
+        'PORT': '3306',       # El puerto de MySQL (por defecto es 3306)
     }
+}
+
+
+#DATABASES = {
+#       'default': {
+#            'ENGINE': 'django.db.backends.mysql',
+#            'NAME': 'CasinoServicios',
+#            'USER': 'root',
+#            'PASSWORD': '2022',
+#            'HOST': 'localhost',
+#            'PORT': '3306',
+#        }
+#    }
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://www.buenamezcla.com/', '193.203.167.65']
 
 
 # Application definition
@@ -158,7 +159,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
