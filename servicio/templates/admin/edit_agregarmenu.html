@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}" />
+
+<div class="row g-0 text">
+    <div class="col-md-4 p-2" style="background-color: #C2C2C2;">
+        <div class="container">
+            <form action="{% url 'editarMenu' id_menu %}" method="POST">
+                {% csrf_token %}
+                <center><h4 class="py-2" style="color:white">EDITAR MENU</h4></center> 
+                <input type="hidden" name="id_menu" value="{{ id_menu }}">
+                <div class="mb-3">
+                    {% for menu in menus %}
+                        <label for="txtTitulo" class="form-label" style="color:white">Titulo</label>
+                        <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Pollo Coñac" value ="{{ menu.titulo }}" required/>
+                </div>
+                    <label for="txtDiaSemana" class="form-label" style="color:white">Fecha Servicio</label>
+                    <input type="date" class="form-control" id="fechaServicio" name="fechaServicio" placeholder="" value="{{ menu.fecha_servicio|date:'Y-m-d' }}" required/>
+
+                   
+                        <div class="mb-3">
+                            <label for="txtDescripcion" class="form-label" style="color:white">Descripcion</label>
+                            <textarea class="form-control" id="descripcion" name="descripcion" rows="3" placeholder="" value = "">{{ menu.descripcion }}</textarea>
+                        </div>
+                            
+                        <center><button type="submit" class="btn btn-primary bg-warning">Actualizar</button><br><br>
+                        <a href="{% url 'usuarioslistas' %}" > <h5>Cancelar</h5></a> </a></center>
+                {% endfor %}
+                {% if messages %}
+                <div class="alert alert-info" role="alert">
+                    <ul>
+                        {% for message in messages %}
+                        <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </form>
+        </div>
+    
+    </div>
+
+    <div class="col-md-8 bg-white">
+        <center><h3 class="titu">Lista Menu</h3></center>
+
+        <form method="GET" action="/menu_lista/">
+            <input type="text" id="searchInput" name="q" placeholder="Buscar Menu" value="{{ query|default_if_none:'' }}">
+            <button type="submit">Buscar</button>
+            <a href="/menu_lista/" class="mostrar-todo">Mostrar Todo</a>
+        </form><br>
+
+        <div class="table-responsive">
+            <table id="menu-table" class="display table" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Menu</th>
+                        <th>Descripcion</th>
+                        <th>Fecha Servicio</th>
+                        <th>Opciones</th>
+                        <th>Visible</th>
+                       
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for menu in menus %}
+                    <tr>
+                        <td>{{ menu.titulo }}</td>
+                        <td>{{ menu.descripcion }}</td>
+                        <td>{{ menu.fecha_servicio|date:"d/m/Y" }}</td>
+                        <td>{{ menu.id_opciones}}</td>
+                        <td>
+                            <div class="form-check form-switch" style="display: flex; justify-content: justify; align-items: center; height: 100%;">
+                                <input class="form-check-input switch-activo" type="checkbox" role="switch" id="flexSwitchCheckChecked" {% if menu.id_estado %}checked{% endif %} data-id="{{ menu.id }}">
+                                
+                            </div>
+                        </td>
+                       
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
+
+<script src="{% static 'js/agregarmenu.js' %}"></script>
+{% endblock %}
