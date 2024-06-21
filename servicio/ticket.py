@@ -15,19 +15,8 @@ from django.utils import timezone
 from django.contrib import messages
 
 # Importar bibliotecas específicas según el sistema operativo
-if platform.system() == "Windows":
-    import win32print
-    import win32api
-else:
-    import cups
 
-# Función de impresión para Windows
-def print_pdf_windows(pdf_content):
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
-        temp_file.write(pdf_content)
-        temp_file.close()
-        printer_name = win32print.GetDefaultPrinter()
-        win32api.ShellExecute(0, "print", temp_file.name, f'/d:"{printer_name}"', ".", 0)
+import cups
 
 # Función de impresión para Linux
 def print_pdf_linux(pdf_content):
@@ -83,11 +72,8 @@ def generar_ticket(request, usuario_id, fecha):
         buffer.close()
         response.write(pdf)
 
-        # Imprimir el PDF dependiendo del sistema operativo
-        if platform.system() == "Windows":
-            print_pdf_windows(pdf)
-        else:
-            print_pdf_linux(pdf)
+        # Imprimir el PDF 
+        print_pdf_linux(pdf)
 
         datos.impreso = 1
         datos.fecha_impreso = timezone.now()
